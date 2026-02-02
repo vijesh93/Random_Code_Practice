@@ -93,6 +93,7 @@ class Solution_GPT:
             needed_values[complement] = i
 
 
-nums_array = [3, 2, 4]
-target_value = 6
-print(Solution().twoSum(nums=nums_array, target=target_value, verbose=False))
+if __name__ == "__main__":
+    nums_array = [3, 2, 4]
+    target_value = 6
+    print(Solution().twoSum(nums=nums_array, target=target_value, verbose=False))
