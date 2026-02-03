@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Solution:
 
     def __init__(self):
@@ -58,6 +61,7 @@ class Solution:
                 print("*****")
                 print("theoritical_buy_day: ", theoritical_buy_day)
                 print("theoritical_buy_price: ", theoritical_buy_price)
+
             # Phase 1
             if day_price > self.sell_price:
                 self.sell(day_index=day_index)
@@ -66,7 +70,7 @@ class Solution:
                 continue
 
             # Phase 2
-            if day_price < self.buy_price:
+            if day_price < theoritical_buy_price: # self.buy_price:
                  
                 theoritical_buy_day = day_index
                 theoritical_buy_price = day_price
@@ -74,13 +78,32 @@ class Solution:
                     print("Updated theoritical_buy_day: ", theoritical_buy_day)
                     print("Updated theoritical_buy_price: ", theoritical_buy_price)
 
+            # Printing for debug
+            if self.verbose:
+                print("-----")
+                print("After Phase 1 and 2")
+                print("self.buy_day: ", self.buy_day)
+                print("self.buy_price: ", self.buy_price)
+                print("*****")
+                print("day_price: ", day_price)
+                print("theoritical_buy_day: ", theoritical_buy_day)
+                print("theoritical_buy_price: ", theoritical_buy_price)
+                print("self.profit", self.profit)
+
             # Phase 3
-            if day_price - theoritical_buy_price > self.profit:
+            if (day_price - theoritical_buy_price) > self.profit:
+                print("Entering Phase 3 for day_index: ", day_index)
                 self.buy(day_index=theoritical_buy_day)
                 self.sell(day_index=day_index)
+            
+            # Phase 4: When to adjust buy to theoritical buy
+            if self.sell_price - self.buy_price < self.sell_price - theoritical_buy_price:
+                if self.verbose:
+                    print("Adjusting buy to theoritical buy")
+                self.buy(day_index=theoritical_buy_day)
 
         return max(self.profit, 0)
         
 
 if __name__ == "__main__":
-        print(Solution().maxProfit(prices=[7,1,5,3,6,4], verbose=True))
+        print(Solution().maxProfit(prices=[2, 1, 4], verbose=True))
