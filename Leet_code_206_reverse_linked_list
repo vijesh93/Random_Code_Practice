@@ -1,0 +1,47 @@
+# Definition for singly-linked list.
+from typing import List
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        
+        prev = None
+
+        while head:
+            
+            head_new = head.next
+
+            head.next = prev
+
+            prev = head
+            head = head_new
+
+
+        return prev
+    
+
+# AI Generated solution, same as mine :D :D   
+class Solution_GPT:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        curr = head
+        
+        while curr:
+            # 1. Save the "Future" (so we don't lose the rest of the list)
+            next_node = curr.next
+            
+            # 2. Flip the arrow (The actual reversal)
+            curr.next = prev
+            
+            # 3. Move forward: Slide the 'prev' and 'curr' one step right
+            prev = curr
+            curr = next_node
+            
+        # At the end, 'prev' will be standing on the new Head
+        return prev
