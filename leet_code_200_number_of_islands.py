@@ -1,45 +1,92 @@
+"""
+200. Number of Islands
+Attempted
+Medium
+Topics
+premium lock icon
+Companies
+Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+ 
+
+Example 1:
+
+Input: grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+Output: 1
+Example 2:
+
+Input: grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+Output: 3
+ 
+
+Constraints:
+
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 300
+grid[i][j] is '0' or '1'.
+
+"""
+
 from typing import List
 
 
 class Solution:
+
+    def flip_all_neighbouring(self, y, x, grid, num_rows, num_cols):
+        if grid[y][x] == "0":
+            return
+    
+        # Flipping
+        grid[y][x] = "0"
+
+        # Checking if not top boundary, then check top values
+        if y - 1 >= 0 and y - 1 < num_rows:
+            if grid[y - 1][x] == "1": self.flip_all_neighbouring(y - 1, x, grid, num_rows, num_cols)
+        # Checking if not bottom boundary, then check bottom values
+        if y + 1 >= 0 and y + 1 < num_rows:
+            if grid[y + 1][x] == "1": self.flip_all_neighbouring(y + 1, x, grid, num_rows, num_cols)
+        
+        # Checking if not left boundary, then check left values
+        if x - 1 >= 0 and x - 1 < num_cols:
+            if grid[y][x - 1] == "1": self.flip_all_neighbouring(y, x - 1, grid, num_rows, num_cols)
+        # Checking if not right boundary, then check right values
+        if x + 1 >= 0 and x + 1 < num_cols:
+            if grid[y][x + 1] == "1": self.flip_all_neighbouring(y, x + 1, grid, num_rows, num_cols)
+
+
     def numIslands(self, grid: List[List[str]]) -> int:
-        num_rows = len(grid)
-        num_cols = len(grid[0])
+        
+        num_rows = len(grid)    # y
+        num_cols = len(grid[0]) # x
+        island_counter = 0
+        for y in range(num_rows):
+            for x in range(num_cols):
 
-        num_islands = 0
-        for x in range(num_cols):
-            for y in range(num_rows):
                 if grid[y][x] == "1":
-                    
-                    if x == 0 and y == 0:
-                        num_islands = num_islands + 1
-                        print("Element found at x = ", x, "and y = ", y)
+                    island_counter = island_counter + 1
+                    self.flip_all_neighbouring(y, x, grid, num_rows, num_cols)
+        return island_counter
 
-                    # If first col, check only top and do not check left side
-                    elif x == 0 and y > 0:
-                        if grid[y - 1][x] == "0":
-                            num_islands = num_islands + 1
-                            print("Element found at x = ", x, "and y = ", y)
-                    
-                    # If first row, check only left and do not check left side
-                    elif x > 0 and y == 0:
-                        if grid[y][x - 1] == "0":
-                            num_islands = num_islands + 1
-                            print("Element found at x = ", x, "and y = ", y)
-
-                    # For center elements check left and top both
-                    else:
-                        if grid[y][x - 1] == "0" and grid[y - 1][x] == "0":
-                            num_islands = num_islands + 1
-                            print("Element found at x = ", x, "and y = ", y)
-
-        return num_islands
 
 if __name__ == "__main__":
     print('Starting')
-    """print(Solution().numIslands([["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]))
+    print(Solution().numIslands([["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]))
     print("Expected: 1 ****************************")
     print(Solution().numIslands([["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]))
-    print("Expected: 3 ****************************")"""
+    print("Expected: 3 ****************************")
     print(Solution().numIslands([["1","1","1"],["0","1","0"],["1","1","1"]]))
     print("Expected: 1 ****************************")
+    
