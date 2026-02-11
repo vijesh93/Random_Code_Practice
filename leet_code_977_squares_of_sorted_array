@@ -1,0 +1,123 @@
+from typing import List
+
+
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+
+        if nums[0] >= 0:
+            return [item * item for item in nums]
+        
+        elif nums[0] < 0 and nums[-1] <= 0:
+            return list(reversed([item * item for item in nums]))
+
+        else:
+            list_squares_negative = []
+            list_squares_positive_sorted = []
+
+            for item in nums:
+                if item < 0:
+                    list_squares_negative.append(item * item)
+                
+                else:
+                    list_squares_positive_sorted.append(item * item) # Note 0 could be here
+
+            list_final = []
+            negative_pointer = len(list_squares_negative) - 1
+            positive_pointer = 0
+            while len(list_final) < len(nums):
+
+                if list_squares_negative[negative_pointer] < list_squares_positive_sorted[positive_pointer]:
+                    list_final.append(list_squares_negative[negative_pointer])
+                    # print("List 1: ", list_final)
+                    negative_pointer = negative_pointer - 1 
+                
+                elif list_squares_negative[negative_pointer] > list_squares_positive_sorted[positive_pointer]:
+                    list_final.append(list_squares_positive_sorted[positive_pointer])
+                    # Shift right on positive array
+                    positive_pointer = positive_pointer + 1
+                    # print("List 2: ", list_final)
+
+                else:
+                    list_final.append(list_squares_negative[negative_pointer])
+                    list_final.append(list_squares_positive_sorted[positive_pointer])
+                    # Shift left on negative array and shift right on positive array
+                    negative_pointer = negative_pointer - 1
+                    positive_pointer = positive_pointer + 1
+                    # print("List 3: ", list_final)
+
+                if negative_pointer < 0 and positive_pointer <= len(list_squares_positive_sorted):
+                    # Negative list ended 
+                    list_final.extend(list_squares_positive_sorted[positive_pointer:])
+                    return list_final
+                
+                if negative_pointer >= 0 and positive_pointer >= len(list_squares_positive_sorted):
+                    # Positive list ended
+                    list_final.extend(list(reversed(list_squares_negative[0: negative_pointer + 1])))
+                    return list_final
+        
+            return list_final
+    
+
+class Solution_2:
+        """
+        Looks better but actually O(N2) as pop(0) and insert(0, element) are O(N) itself!!!
+        """
+        def sortedSquares(self, nums: List[int]) -> List[int]:  
+            
+            left = 0
+            right = len(nums) - 1
+            final_list = []
+            
+            if len(nums) == 1:
+                return [nums[0] ** 2]
+            
+            while nums:
+                if nums[left] ** 2 > nums[right] ** 2:
+                    element = nums.pop(0)
+                    right = right - 1
+                    final_list.insert(0, element ** 2)
+                
+                elif nums[left] ** 2 < nums[right] ** 2:
+                    element = nums.pop()
+                    right = right - 1
+                    final_list.insert(0, element ** 2)
+                
+                else:
+                    # Append both the left and the right elements if same
+                    element = nums.pop(0)
+                    right = right - 1
+                    final_list.insert(0, element ** 2)
+                    # Check if list ended
+                    if len(nums) == 0:
+                        return final_list
+                    
+                    element = nums.pop()
+                    right = right - 1
+                    final_list.insert(0, element ** 2)
+
+            return final_list
+
+
+class Solution_AI:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        left = 0
+        right = n - 1
+        # Pre-allocate a list of the same size. 
+        # Filling an index (final_list[i] = x) is O(1) - super fast!
+        final_list = [0] * n 
+        
+        # We fill the list from the last index to the first
+        for i in range(n - 1, -1, -1):
+            if abs(nums[left]) > abs(nums[right]):
+                final_list[i] = nums[left] ** 2
+                left += 1
+            else:
+                final_list[i] = nums[right] ** 2
+                right -= 1
+                
+        return final_list
+    
+
+    if __name__ == "__main__":
+        print(Solution_2().sortedSquares([-3, 0, 2]))
