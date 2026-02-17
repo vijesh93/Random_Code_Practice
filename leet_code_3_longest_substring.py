@@ -33,6 +33,9 @@ Constraints:
 s consists of English letters, digits, symbols and spaces.
 """
 
+from ast import List
+
+
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         # Return the len(s) if single string or None
@@ -112,3 +115,18 @@ if __name__ == "__main__":
     print("Expected: 0 ****************************")
     print(Solution().lengthOfLongestSubstring("au"))
     print("Expected: 2 ****************************")
+
+    
+    def singleNumber(nums: List) -> int:
+        res = 0
+        for n in nums:
+            res ^= n # XOR each number into res
+            # Printing the intermediate result after XORing each number, along with the current number      
+            print("After XORing with ", n, " intermediate result is: ", res)
+            # print(res, ' n = ', n)
+        return res
+    
+    singleNumber([2, 2, 1, 5, 5, 7, 8, 9, 7, 9, 8]) # Returns 1
+    print("Expected: 1 ****************************")
+    singleNumber([4,1,2,1,2]) # Returns 4
+    print("Expected: 4 ****************************")
