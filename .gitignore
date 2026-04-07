@@ -7,8 +7,7 @@ postgres_data/
 !.env.example
 
 # Python
-__pycache__/
-*.py[cod]
+*__pycache__/
 .venv/
 
 # Node (Frontend)
