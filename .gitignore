@@ -1,0 +1,25 @@
+# Database data (the volume we created)
+data_files/
+postgres_data/
+
+# Environment secrets
+.env*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Node (Frontend)
+node_modules/
+dist/
+
+# Tif data
+*.Tif
+*.tif
+*.Tiff
+*.tiff
+
+# Old files folders
+*_old/
